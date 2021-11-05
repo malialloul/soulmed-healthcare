@@ -1,0 +1,73 @@
+.login-form{
+	margin: auto;	
+	text-align: center;
+	height: 100%;
+	z-index: 1;
+	position: relative;
+	padding: 30px;
+
+}
+.login-form form{
+	width: 400px;
+	background: #fff;
+	border-radius: 5px;
+	padding: 50px;
+	-webkit-box-shadow: -1px -1px 8px -1px rgba(0,0,0,0.52);
+	-moz-box-shadow: -1px -1px 8px -1px rgba(0,0,0,0.52);
+	box-shadow: -1px -1px 8px -1px rgba(0,0,0,0.52);
+	margin-bottom: 30px;
+}
+.input{
+	width: 48%;
+	height: 50px;
+	font-size: 17px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 0 15px;
+	margin-bottom: 15px;
+}
+.input.full-width{
+	width: 100%;
+}
+
+.input:hover{
+	border: 2px solid #1c1e21;
+	background: #f0f2f5;
+}
+.btn{
+	font-size: 20px;
+	background: #1877f2;
+	height: 50px;
+	color: #fff;
+	line-height: 40px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	text-transform: capitalize;
+}
+.btn:hover{
+	color: white;
+}
+.login a{
+	display: block;
+}
+.create-btn .btn, .signup-btn .btn{
+	display: inline-block;
+	margin-top: 20px;
+	padding: 0 25px;
+	background: #42b72a;
+	transition: .3s;
+	
+}
+.create-btn .btn:hover{
+	background: #44bd32;
+	color: white;
+}
+.forgot a{
+	font-size: 14px;
+	line-height: 19px;
+	color:#1877f2;
+}
+.forgot a:hover,
+.login-form p a:hover{
+	text-decoration: underline;
+}

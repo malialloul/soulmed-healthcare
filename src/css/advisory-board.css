@@ -1,0 +1,29 @@
+.advisory{
+
+    padding: 50px;
+    text-align: center;
+    
+}
+
+em{
+    font-size: 30px;
+}
+
+span{
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.card-img{
+   
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: white;
+    cursor: pointer;
+}
+
+.advisory-card{
+    padding: 20px;
+}

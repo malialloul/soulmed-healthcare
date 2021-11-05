@@ -1,0 +1,4 @@
+.items{
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+}

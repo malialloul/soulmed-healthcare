@@ -1,0 +1,31 @@
+.logo{
+    width: 200px;
+}
+.dropdown-menu{
+    z-index: 6;
+    position: absolute;
+}
+
+.navbar-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.navbar-nav .nav-page, .user{
+    font-size: 20px;
+}
+
+.navbar-nav .nav-page:hover{
+    background-color: grey;
+}
+
+.profile-pic{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.user a:hover{
+    color:blue;
+    text-decoration: underline;
+}

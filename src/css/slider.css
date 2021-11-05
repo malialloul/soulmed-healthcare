@@ -1,0 +1,13 @@
+#carouselHero .carousel-item img {  
+    object-fit: fit;
+    object-position: center;
+    height:50vh;
+  }
+
+ .right, .left{
+     width: 12.5%;
+ } 
+
+ #carousel-inner{
+    width: 75%;
+ }
