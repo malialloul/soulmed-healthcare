@@ -21,7 +21,7 @@ const ScrollPagination = ({ ...props }) => {
       </div>
       <div ref={ref} className="container d-flex items">
         {props.children.map((item, i) => {
-          return item;
+          return <div key={"scroll_item"+i}>{item}</div>;
         })}
       </div>
       <div

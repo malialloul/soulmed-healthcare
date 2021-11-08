@@ -1,11 +1,13 @@
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RightChevron from "../icons/right-chevron";
 import LeftChevron from "../icons/left-chevron";
 import "../css/slider.css";
 
 const Slider = ({ ...props }) => {
   const [visibleIndex, setVisibleIndex] = useState(0);
+
+
   return (
     <div
       id="carouselHero"
@@ -25,14 +27,15 @@ const Slider = ({ ...props }) => {
 
       <div className="carousel-inner">
         {props.children.map((child, i) => {
-          let ch = React.cloneElement(child, { className: child.props.className + " " + props.classNames  })
+          let ch = React.cloneElement(child, {
+            className: child.props.className + " " + props.classNames,
+          });
           return (
             <div
               key={"slider" + i}
               className={classNames("carousel-item ", {
                 active: visibleIndex === i,
               })}
-
             >
               {ch}
             </div>

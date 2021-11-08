@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { Link, Route, Routes, Switch, BrowserRouter } from "react-router-dom";
+import React from "react";
+import {  Route, Routes, BrowserRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import logo from "./logo.png";
 import "./css/landing-page.css";
 import "./css/nav-bar.css";
 import Home from "./views/home";
@@ -14,18 +13,15 @@ const App = () => {
   const [t, i18n] = useTranslation("common");
 
   return (
-    <html dir={i18n.language === "en" ? "ltr" : "rtl"}>
-     
-      <body>
-        <BrowserRouter history={createBrowserHistory}>
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/products" element={<ProductsMainPage />} />
-            <Route exact path="/products/:productId" element={<Product />} />
-          </Routes>
-        </BrowserRouter>
-      </body>
-    </html>
+    <div dir={i18n.language === "en" ? "ltr" : "rtl"}>
+      <BrowserRouter history={createBrowserHistory}>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/products" element={<ProductsMainPage />} />
+          <Route exact path="/products/:productId" element={<Product />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 

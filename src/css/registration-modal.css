@@ -6,8 +6,6 @@
 	font-size: 15px;
 }
 
-
-
 .signup-form select,.signup-form .form-check{
 	height: 50px;
 	font-size: 17px;
@@ -15,12 +13,17 @@
 	border-radius: 5px;
 	padding: 0 15px;
 	margin-bottom: 15px;
-	width: 30%;
 
 }
 
-
-
 .signup-btn .btn{
 	padding: 0 100px;
+}
+
+.full-width{
+	width: 100%;
+}
+
+.error{
+	color: red;
 }

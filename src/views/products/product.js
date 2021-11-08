@@ -16,10 +16,10 @@ const Product = () => {
     productsController.getProduct(productId).then((response) => {
       setProductDetails(response.data[0]);
     });
-  });
+  }, []);
   return (
     <div className="">
-                  <NavBar/>
+      <NavBar selectedTab="products" />
 
       <div className="header d-flex justify-content-between">
         <div className="col-4">
@@ -38,7 +38,10 @@ const Product = () => {
           <div className="col-4 d-flex h-auto flex-column justify-content-center">
             {imagePath.map((img, i) => {
               return (
-                <div className="d-flex h-auto justify-content-center">
+                <div
+                  key={"product" + i}
+                  className="d-flex h-auto justify-content-center"
+                >
                   <img
                     src={img}
                     alt=""
@@ -54,8 +57,8 @@ const Product = () => {
           </div>
         </div>
         <div className="about">
-             <strong>Abou this Item</strong>  
-             <span> this item is kaza kaza</span> 
+          <strong>Abou this Item</strong>
+          <span> this item is kaza kaza</span>
         </div>
       </div>
     </div>

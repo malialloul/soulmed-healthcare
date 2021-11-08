@@ -17,12 +17,13 @@ const Home = () => {
     });
   }, []);
 
+
   return (
     <div>
-      <NavBar />
+      <NavBar selectedTab="home" />
       <br />
-
       <div className="body">
+        <LoginModel/>
         <SearchModal
           categories={categories}
           doctorsData={[]}

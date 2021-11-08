@@ -1,4 +1,3 @@
-import avatar from "../avatar.jpeg";
 import appointment from "../appointment.png";
 
 import "../css/advisory-board.css";

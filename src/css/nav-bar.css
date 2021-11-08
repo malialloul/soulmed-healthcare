@@ -29,3 +29,6 @@
     color:blue;
     text-decoration: underline;
 }
+.selected_tab{
+    background-color: grey;
+}

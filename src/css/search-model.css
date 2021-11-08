@@ -131,6 +131,7 @@ ul li{
     height:24px;
 	top:20px;
 	cursor: pointer;
+	
 }
 
 .around-me-div {
@@ -142,8 +143,10 @@ ul li{
 	color: #2b4660;
 	display: flex;
 	align-items: center;
-	transition: transform 600ms;
-	transition-delay: 200ms;
+	-webkit-transition: all 0.4s ease-in-out 0s;
+    -moz-transition: all 0.4s ease-in-out 0s;
+    transition: all 0.4s ease-in-out 0s;
 	background-color: #fff;
 	font-size: 14px;
+
 }

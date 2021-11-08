@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { welcomeConroller } from "../controllers/welcome-page";
 import RightChevron from "../icons/right-chevron";
 import Toggle from "../icons/toggle";
@@ -119,6 +119,7 @@ const CategoriesDropDown = ({ ...props }) => {
               {provCategoriesList.map((provcategory, index) => {
                 return (
                   <li
+                  key={"sub_categrory"+index}
                     onClick={() =>
                       modifyHeader(provcategory.name, provcategory.id)
                     }

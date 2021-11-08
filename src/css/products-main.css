@@ -19,15 +19,22 @@ strong{
 
 }
 
+.search-bar{
+    position: relative;
+}
+
+.search-icon{
+    position: absolute;
+    left: 2;
+    top: 2;
+}
+
 .category-filter{
-    height: 60px;
 	border-radius: 10px ;
 	display: block;
 	border-style: none;
 	width: 100%;
     background-color: white;
-    display: flex;
-    align-items: center;
     padding: 40px;
 }
 
@@ -37,9 +44,9 @@ strong{
     border: 2px solid #ddd;    
 }
 .key{
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
-    border: 2px solid #ddd; 
+    border: 2px solid #ddd;     
     width: 200px;
     display: flex;
     align-items: center;
@@ -51,6 +58,20 @@ strong{
     cursor: pointer;
     padding: 10px;
     height: 100%;   
+}
+
+.category-selected{
+    background-color: cyan;
+    height: 100%;
+   border-left: none;
+ 
+}
+.category-selected:hover{
+    background-color: cyan;
+}
+
+.close:hover{
+    background-color: red;
 }
 
 
@@ -66,11 +87,16 @@ strong{
 
 .advanced-search-btn{
     background-color: #ddd;
+    padding: 10px;
     cursor: pointer;
     border: none;
     border-radius: 20px;
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+}
+
+.advanced-search-btn:hover{
+    background-color: grey;
 }
 
 #advanced-search-div{
@@ -86,12 +112,4 @@ strong{
 .filter-keys{
     text-align: center;
 }
-.category-selected{
-    background-color: cyan;
-    height: 100%;
-   border-left: none;
- 
-}
-.category-selected:hover{
-    background-color: cyan;
-}
+

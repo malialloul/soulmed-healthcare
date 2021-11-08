@@ -7,16 +7,17 @@ import classNames from "classnames";
 import { Outlet, Link } from "react-router-dom";
 
 const ProductsCustomPagination = ({ ...props }) => {
+  const maxPageSize = props.length;
+  const [pageSize, setPageSize] = useState(3);
   const pageNumbers = Array.from(
-    { length: props.data.length / 3 },
+    { length: props.data.length / pageSize },
     (_, i) => i + 1
   );
-
   const [dataList, setDataList] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
 
   const next = () => {
-    if (pageNumber !== props.data.length / 3) {
+    if (pageNumber !== props.data.length / pageSize) {
       setPageNumber(pageNumber + 1);
     }
   };
@@ -27,29 +28,47 @@ const ProductsCustomPagination = ({ ...props }) => {
     }
   };
   useEffect(() => {
-    let list = props.data.slice((pageNumber - 1) * 3, pageNumber * 3);
+    let list = props.data.slice(
+      (pageNumber - 1) * pageSize,
+      pageNumber * pageSize
+    );
     setDataList(list);
-  }, [pageNumber, props.data]);
+  }, [pageNumber, props.data, pageSize]);
 
   return (
     <div className="container-fluid">
+      <div className="view">
+        <span>View</span>
+        <select onChange={(e) => setPageSize(parseInt(e.target.value))}>
+          {Array.from(
+            { length: props.data.length },
+            (_, i) => (i+1) * 3
+          ).map((size, i) => {
+            return <option value={size}>{size}</option>;
+          })}
+        </select>
+      </div>
       <div className="d-flex row">
         {dataList.map((product, i) => {
           return (
-           <Link to={"/products/"+product.id} className="col-4 product-list-item">
-              <div key={"product" + i}>
-              <img src={laptop1} alt="" className="product-img" />
-              <div className="overlay">
-                <div className="d-flex flex-column align-items-center justify-content-center overlay-content">
-                  <strong>
-                    {product.name} by {product.company_name}
-                  </strong>
+            <Link
+              key={"product" + i}
+              to={"/products/" + product.id}
+              className="col-4 product-list-item"
+            >
+              <div>
+                <img src={laptop1} alt="" className="product-img" />
+                <div className="overlay">
+                  <div className="d-flex flex-column align-items-center justify-content-center overlay-content">
+                    <strong>
+                      {product.name} by {product.company_name}
+                    </strong>
 
-                  <strong>{product.price}$</strong>
+                    <strong>{product.price}$</strong>
+                  </div>
                 </div>
               </div>
-            </div>
-           </Link>
+            </Link>
           );
         })}
       </div>
@@ -57,15 +76,19 @@ const ProductsCustomPagination = ({ ...props }) => {
       <div className="d-flex justify-content-center">
         <div
           onClick={() => previous()}
-          className={classNames("col-1 d-flex align-items-center justify-content-center", {
-            "disabled": pageNumber === 1
-          })}
+          className={classNames(
+            "col-1 d-flex align-items-center justify-content-center",
+            {
+              disabled: pageNumber === 1,
+            }
+          )}
         >
           <LeftChevron />
         </div>
         {pageNumbers.map((i) => {
           return (
             <div
+              key={i}
               onClick={() => setPageNumber(i)}
               className={classNames("pageNumber", {
                 pageNumberSelected: i === pageNumber,
@@ -75,11 +98,14 @@ const ProductsCustomPagination = ({ ...props }) => {
             </div>
           );
         })}
-         <div
+        <div
           onClick={() => next()}
-          className={classNames("col-1 d-flex align-items-center justify-content-center", {
-            "disabled": pageNumber === props.data.length / 3
-          })}
+          className={classNames(
+            "col-1 d-flex align-items-center justify-content-center",
+            {
+              disabled: pageNumber === props.data.length / 3,
+            }
+          )}
         >
           <RightChevron />
         </div>
