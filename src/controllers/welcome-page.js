@@ -27,42 +27,33 @@ const getInfoByQuery = (query) => {
   return axios.get(apiURL + "/info?" + query);
 };
 
-const getProvisionByCategory = (category_id) => {
+const getProfessionByCategory = (category_id) => {
   return axios.get(
     apiURL +
-      "/provision" +
+      "/profession" +
       (category_id !== 0 ? "?category_fk=" + category_id : "")
   );
 };
 
-const getProvision = (provision_fk) => {
-  console.log(
-    apiURL +
-      "/provision" +
-      (provision_fk !== -1 ? "?id=" + provision_fk : "")
-  );
+const getProfession = (profession_fk) => {
   return axios.get(
     apiURL +
-      "/provision" +
-      (provision_fk !== -1 ? "?id=" + provision_fk : "")
+      "/profession" +
+      (profession_fk !== -1 ? "?id=" + profession_fk : "")
   );
 };
 
 const getCategory = (category_id) => {
-  return axios
-    .get(
-      apiURL + "/categories" + (category_id !== 0 ? +"?id=" + category_id : "")
-    )
-    .then((response) => {
-      return response;
-    });
+  return axios.get(
+    apiURL + "/categories" + (category_id !== 0 ? "?id=" + category_id : "")
+  );
 };
 
-const getInfoByProvision = (provision_id) => {
+const getInfoByProfession = (profession_fk) => {
   return axios.get(
     apiURL +
       "/info" +
-      (provision_id !== -1 ? "?provision_fk=" + provision_id : "")
+      (profession_fk !== -1 ? "?profession_fk=" + profession_fk : "")
   );
 };
 
@@ -135,10 +126,10 @@ export const welcomeConroller = {
   getDoctorsData,
   getCurrentLocation,
   getAllCategories,
-  getProvisionByCategory,
-  getProvision,
+  getProfessionByCategory,
+  getProfession,
   getCategory,
-  getInfoByProvision,
+  getInfoByProfession,
   getAllProvisions,
   getInfoByQuery,
 };

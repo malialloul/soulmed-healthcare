@@ -2,11 +2,16 @@ import React from "react";
 import Slider from "@material-ui/core/Slider";
 import "../css/price-range.css";
 const PriceRange = ({ ...props }) => {
-  const [value, setValue] = React.useState([props.min, props.max]);
+ const [value, setValue] = React.useState([props.min, props.max]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
+
+  }
+
+   const getMin = () => {
+    return value[0];
+  }
   return (
     <div className="d-flex flex-column justify-content-center">
      

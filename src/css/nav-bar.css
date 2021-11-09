@@ -32,3 +32,12 @@
 .selected_tab{
     background-color: grey;
 }
+.dropdown-toggle:hover .dropdown-menu-end{
+    display: block;
+}
+.verification{
+    background-color: #FFF2CC;
+    border-radius: 20px;
+    padding: 20px;
+    
+}

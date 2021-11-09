@@ -1,18 +1,12 @@
-.signup-title .title{
-	font-weight: bold;
-}
-.signup-title .subtitle{
-	line-height: 10px;
-	font-size: 15px;
-}
-
 .signup-form select,.signup-form .form-check{
 	height: 50px;
 	font-size: 17px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	padding: 0 15px;
 	margin-bottom: 15px;
+	width: 100%;
+	display: flex;
+	align-items: center;
 
 }
 
@@ -27,3 +21,32 @@
 .error{
 	color: red;
 }
+.check {
+	-webkit-appearance: none; /*hides the default checkbox*/
+	height: 20px;
+	width: 20px;
+	transition: 0.10s;
+	background-color: #FE0006;
+	text-align: center;
+	font-weight: 600;
+	color: white;
+	border-radius: 3px;
+	outline: none;
+  }
+  
+  .check:checked {
+	background-color: #0E9700;
+  }
+  
+  .check:before {
+	content: "✖";
+  }
+  .check:checked:before {
+	content: "✔";
+  }
+  
+  .check:hover {
+	cursor: pointer; 
+	opacity: 0.8;
+  }
+

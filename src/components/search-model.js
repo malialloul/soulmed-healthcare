@@ -8,87 +8,104 @@ import LocationIcon from "../icons/location-icon";
 import AroundMe from "../icons/around-me";
 import Close from "../icons/close";
 import { welcomeConroller } from "../controllers/welcome-page";
-import DropDown from "../inputs/dropdown";
+import SearchInput from "../inputs/search-input";
 import CategoriesDropDown from "./categories-dropdown";
 import "../css/search-model.css";
+import { useNavigate } from "react-router-dom";
+import { util } from "../public/util";
 
-const SearchModal = ({ ...props }) => {
-  const [searchList, setSearchList] = useState(props.doctorsData);
-  const [doctorLocationList, setDoctorsLocationList] = useState(props.data);
-  const [searchFilterTextValue, setSearchFilterTextValue] = useState("");
+const SearchModel = ({ ...props }) => {
+  const [searchFilterTextValue, setSearchFilterTextValue] = useState(
+    props.searchText ? props.searchText : ""
+  );
   const [locationFilterTextValue, setLocationFilterTextValue] = useState("");
   const [visibleSearchDropDown, setSearchVisibleDropDown] = useState(false);
   const [visibleLocationDropDown, setLocationVisibleDropDown] = useState(false);
   const [showAroundMe, setShowAroundMe] = useState(false);
   const [myLocationText, setMyLocationText] = useState("Around Me");
-  const [searchClass, setSearchClass] = useState("apmt");
   const [searchValue, setSearchValue] = useState("");
 
-  const [categories, setCategories] = useState(props.categories);
-
-  const searchRef = useRef();
-  const locationRef = useRef();
-
   const [choiceSelected, setChoiceSelected] = useState({
-    category_id: 0,
-    provision_id: -1,
+    category_id: props.category_id ? props.category_id : 0,
+    profession_id: props.profession_id ? props.profession_id : -1,
   });
 
   const [info, setInfo] = useState([]);
 
   useEffect(() => {
     welcomeConroller
-      .getProvisionByCategory(choiceSelected.category_id)
+      .getProfessionByCategory(choiceSelected.category_id)
       .then((response) => {
         let ids = "";
         response.data.map((pr, i) => {
-          ids += "provision_fk=" + pr.id + "&";
+          ids += "profession_fk=" + pr.id + "&";
         });
         welcomeConroller.getInfoByQuery(ids).then((res) => {
-          setInfo(res.data);
+          let list = res.data;
+
+          if (!props.category_id && choiceSelected.profession_id !== -1) {
+            list = list.filter(
+              (item) => item.profession_fk === choiceSelected.profession_id
+            );
+          }
+
+          setInfo(list);
         });
       });
-  }, [choiceSelected.category_id]);
+  }, [choiceSelected.category_id, choiceSelected.profession_id]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    welcomeConroller
-      .getProvision(choiceSelected.provision_id)
-      .then((response) => {
+  const navigateToAdvancedSearch = (e) => {
+    let count = 0;
+    let itemViewed = null;
+    for (let i = 0; i < info.length; i++) {
+      if (util.showItem(info[i], searchFilterTextValue)) {
+        count++;
+        itemViewed = info[i];
+      }
+    }
 
-        let query = "";
-        if (response.data.length === 1) {
-          query = "provision_fk=" + response.data[0].id;
-        } else {
-          response.data.map((pr, i) => {
-            query += "provision_fk=" + pr.id + "&";
-          });
-        }
-        welcomeConroller.getInfoByQuery(query).then((res) => {
-          setInfo(res.data);
-
-        });
-      });
-  }, [choiceSelected.provision_id]);
-  
+    if (
+      e.key === "Enter" &&
+      searchFilterTextValue !== "" &&
+      !props.category_id
+    ) {
+      if (count === 1) {
+        navigate("view-profile/" + itemViewed.id, { replace: true });
+      } else {
+        navigate(
+          "advanced-search/" +
+            choiceSelected.category_id +
+            "/" +
+            choiceSelected.profession_id +
+            "/" +
+            searchFilterTextValue,
+          { replace: false }
+        );
+      }
+    }
+  };
   return (
     <div className="d-flex align-items-center justify-content-center search-div">
       <CategoriesDropDown
-        data={props.categories}
+        data={props.categories ? props.categories : []}
+        choiceSelected={props.categories ? null : choiceSelected}
         onChange={(choice) => setChoiceSelected(choice)}
       />
 
-      <DropDown data={info} searchText={searchFilterTextValue}>
+      <SearchInput
+        data={info}
+        searchText={searchFilterTextValue}
+        onGetResults={props.getData ? (data) => props.getData(data) : undefined}
+      >
         <div className="dropdown-header">
           <input
             type="text"
-            placeholder={
-              searchValue === ""
-                ? "Doctor, establishment, speciality ..."
-                : searchValue
-            }
+            placeholder="Search: Place Holder: Enter Dr name, Profession, Enter Institute name"
             className="search-input"
             value={searchFilterTextValue}
             onClick={() => setSearchVisibleDropDown(true)}
+            onKeyDown={(e) => navigateToAdvancedSearch(e)}
             onChange={(e) => setSearchFilterTextValue(e.target.value)}
           />
 
@@ -96,9 +113,9 @@ const SearchModal = ({ ...props }) => {
             <SearchIcon />
           </div>
         </div>
-      </DropDown>
+      </SearchInput>
 
-      <DropDown data={[]}>
+      <SearchInput data={[]}>
         <div className="dropdown-header">
           <input
             type="text"
@@ -129,9 +146,9 @@ const SearchModal = ({ ...props }) => {
             </div>
           )}
         </div>
-      </DropDown>
+      </SearchInput>
     </div>
   );
 };
 
-export default SearchModal;
+export default SearchModel;

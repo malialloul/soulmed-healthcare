@@ -5,6 +5,8 @@ import "../../css/products-main.css";
 import DownChevron from "../../icons/down-chevron";
 import Close from "../../icons/close";
 import SearchIcon from "../../icons/search-icon";
+import laptop1 from "../../laptop1.jpeg";
+import { Outlet, Link } from "react-router-dom";
 
 import {
   ReactiveBase,
@@ -14,7 +16,7 @@ import {
   ReactiveList,
 } from "@appbaseio/reactivesearch";
 import classNames from "classnames";
-import ProductsCustomPagination from "../../inputs/products-custom-pagination";
+import CustomPagination from "../../inputs/custom-pagination";
 import NavBar from "../../components/nav-bar";
 import PriceRange from "../../inputs/price-range";
 
@@ -161,7 +163,30 @@ const Product = ({ ...props }) => {
         </div>
       </div>
       <div className="products">
-        <ProductsCustomPagination data={productsList} />
+        <CustomPagination data={productsList}>
+          {productsList.map((product, i) => {
+            return (
+              <Link
+                key={"product" + i}
+                to={"/products/" + product.id}
+                className="col-4 product-list-item"
+              >
+                <div>
+                  <img src={laptop1} alt="" className="product-img" />
+                  <div className="overlay">
+                    <div className="d-flex flex-column align-items-center justify-content-center overlay-content">
+                      <strong>
+                        {product.name} by {product.company_name}
+                      </strong>
+
+                      <strong>{product.price}$</strong>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </CustomPagination>
       </div>
     </div>
   );

@@ -1,0 +1,22 @@
+.doctor-profile{
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+button{
+    border-radius: 20px;
+    padding: 10px;
+    background-color: white;
+    
+}
+.doctor-details{
+    border: 2px solid #ddd;
+    background-color: #68686a;
+    border-radius: 20px;
+    height: 200px;
+}
+.doctor-buttons{
+    display: flex;
+    flex-direction: column;            
+    justify-content: space-evenly;
+}

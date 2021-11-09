@@ -1,12 +1,14 @@
 import React from "react";
-import {  Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import "./css/landing-page.css";
 import "./css/nav-bar.css";
 import Home from "./views/home";
 import ProductsMainPage from "./views/products/main-page";
 import Product from "./views/products/product";
-
+import AdvancedSearch from "./views/advanced-search";
+import WokrWithUs from "./views/work-with-us";
+import ViewProfile from "./views/view-profile";
 import { useTranslation } from "react-i18next";
 
 const App = () => {
@@ -17,8 +19,16 @@ const App = () => {
       <BrowserRouter history={createBrowserHistory}>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/work-with-us" element={<WokrWithUs />} />
+          <Route exact path="/view-profile/:id" element={<ViewProfile />} />
+
           <Route path="/products" element={<ProductsMainPage />} />
           <Route exact path="/products/:productId" element={<Product />} />
+          <Route
+            exact
+            path="/advanced-search/:categoryId/:professionId/:searchText"
+            element={<AdvancedSearch />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

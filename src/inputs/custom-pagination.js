@@ -6,18 +6,19 @@ import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { Outlet, Link } from "react-router-dom";
 
-const ProductsCustomPagination = ({ ...props }) => {
+const CustomPagination = ({ ...props }) => {
   const maxPageSize = props.length;
   const [pageSize, setPageSize] = useState(3);
   const pageNumbers = Array.from(
     { length: props.data.length / pageSize },
     (_, i) => i + 1
   );
-  const [dataList, setDataList] = useState([]);
+  const [dataList, setDataList] = useState(props.children);
+ 
   const [pageNumber, setPageNumber] = useState(1);
 
   const next = () => {
-    if (pageNumber !== props.data.length / pageSize) {
+    if (pageNumber !== props.children.length / pageSize) {
       setPageNumber(pageNumber + 1);
     }
   };
@@ -28,12 +29,12 @@ const ProductsCustomPagination = ({ ...props }) => {
     }
   };
   useEffect(() => {
-    let list = props.data.slice(
+    let list = props.children.slice(
       (pageNumber - 1) * pageSize,
       pageNumber * pageSize
     );
     setDataList(list);
-  }, [pageNumber, props.data, pageSize]);
+  }, [pageNumber, props.children, pageSize]);
 
   return (
     <div className="container-fluid">
@@ -44,33 +45,12 @@ const ProductsCustomPagination = ({ ...props }) => {
             { length: props.data.length },
             (_, i) => (i+1) * 3
           ).map((size, i) => {
-            return <option value={size}>{size}</option>;
+            return <option key={i} value={size}>{size}</option>;
           })}
         </select>
       </div>
       <div className="d-flex row">
-        {dataList.map((product, i) => {
-          return (
-            <Link
-              key={"product" + i}
-              to={"/products/" + product.id}
-              className="col-4 product-list-item"
-            >
-              <div>
-                <img src={laptop1} alt="" className="product-img" />
-                <div className="overlay">
-                  <div className="d-flex flex-column align-items-center justify-content-center overlay-content">
-                    <strong>
-                      {product.name} by {product.company_name}
-                    </strong>
-
-                    <strong>{product.price}$</strong>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+          {dataList}
       </div>
       <br />
       <div className="d-flex justify-content-center">
@@ -114,4 +94,4 @@ const ProductsCustomPagination = ({ ...props }) => {
   );
 };
 
-export default ProductsCustomPagination;
+export default CustomPagination;

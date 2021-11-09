@@ -3,35 +3,78 @@
     {
       "id": 1,
       "name": "Tabib 1",
-      "location": "Paris",
-      "provision_fk": 1
+      "country": "Paris",
+      "profession_fk": 1,
+      "city": "example3",
+      "Price": 600,
+      "location": ["location1"]
     },
     {
       "id": 2,
       "name": "Tabib 2",
-      "location": "United Sates",
-      "provision_fk": 1
+      "country": "United Sates",
+      "profession_fk": 1,
+      "city": "example3",
+      "Price": "500",
+      "location": ["location1", "location2", "location3"]
     },
     {
       "id": 3,
       "name": "nurse 1",
-      "location": "London",
-      "provision_fk": 28
+      "country": "London",
+      "profession_fk": 28,
+      "city": "example3",
+      "Price": "600",
+      "location": ["location1"]
     },
     {
       "id": 4,
       "name": "nurse 2",
-      "location": "London",
-      "provision_fk": 29
+      "country": "London",
+      "profession_fk": 29,
+      "city": "example3",
+      "Price": 800,
+      "location": ["location1"]
     },
     {
       "id": 5,
-      "name": "Tabib 3",
-      "location": "London",
-      "provision_fk": 1
+      "name": "Mohsen",
+      "country": "London",
+      "profession_fk": 1,
+      "city": "example4",
+      "Price": 600,
+      "location": ["location1"]
+    },
+    {
+      "id": 6,
+      "name": "Mhmd",
+      "country": "London",
+      "profession_fk": 1,
+      "city": "example4",
+      "Price": 600,
+      "location": ["location1"]
+    },
+
+    {
+      "id": 7,
+      "name": "Hasan",
+      "country": "London",
+      "profession_fk": 1,
+      "city": "example2",
+      "Price": 100,
+      "location": ["location1", "location2"]
+    },
+    {
+      "id": 8,
+      "name": "ALi",
+      "country": "London",
+      "profession_fk": 1,
+      "city": "example",
+      "Price": 200,
+      "location": ["location1", "location2"]
     }
   ],
-  "provision": [
+  "profession": [
     {
       "id": 1,
       "name": "Allergy & Immunology",
@@ -47,7 +90,6 @@
       "name": "Dermatology",
       "category_fk": 1
     },
-
     {
       "id": 4,
       "name": "Diagnostic Radiology",

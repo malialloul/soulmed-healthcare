@@ -18,7 +18,7 @@ const Services = () => {
             <img src={appointment} alt="" className="img-fluid" />
           </div>
           <br />
-          <span>
+          <span className="label">
             Find a doctor and take an appointment physically or Virtally
           </span>
         </div>
@@ -27,7 +27,7 @@ const Services = () => {
             <img src={appointment} alt="" className="img-fluid" />
           </div>
           <br />
-          <span>
+          <span className="label">
             Find a doctor and take an appointment physically or Virtally
           </span>
         </div>
@@ -37,7 +37,7 @@ const Services = () => {
             <img src={appointment} alt="" className="img-fluid" />
           </div>
           <br />
-          <span>
+          <span className="label">
             Find3 a doctor and take an appointment physically or Virtally
           </span>
         </div>
@@ -47,7 +47,7 @@ const Services = () => {
             <img src={appointment} alt="" className="img-fluid" />
           </div>
           <br />
-          <span>
+          <span className="label">
             Find4 a doctor and take an appointment physically or Virtally
           </span>
         </div>
@@ -57,7 +57,7 @@ const Services = () => {
             <img src={appointment} alt="" className="img-fluid" />
           </div>
           <br />
-          <span>
+          <span className="label">
             Find a doctor and take an appointment physically or Virtally
           </span>
         </div>
@@ -67,7 +67,7 @@ const Services = () => {
             <img src={appointment} alt="" className="img-fluid" />
           </div>
           <br />
-          <span>
+          <span className="label">
             Find a doctor and take an appointment physically or Virtally
           </span>
         </div>
