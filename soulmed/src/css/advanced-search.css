@@ -1,0 +1,32 @@
+html,body{
+    height: 100%;
+    margin: 0;
+}
+.filter-key{
+    background-color: #68686a;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    color: white;
+}
+
+.filters{
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    padding: 20px;
+}
+.filter-keys{
+    margin-top: 20px;
+}
+.key{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.advanced-search{
+    height: 100%;
+}

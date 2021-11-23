@@ -1,0 +1,56 @@
+.wizard-div{
+    position: relative;
+    width: 90%;
+    padding: 40px;   
+}
+
+.main-div{
+    padding: 40px;
+}
+
+
+.wizard-line{
+    border-radius: 20px;
+    border: 2px solid #ddd;
+    position: absolute;
+    width: inherit;
+    top:42%;
+    left:0
+}
+
+.step{
+    border-radius: 50%;
+    background-color: #68686a   ;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.selected_step{
+    width: 50px;
+    height: 50px;
+    background-color: #3fabf3;
+}
+
+.selected_step:hover{
+    background-color: #3fabf3;
+
+}
+
+.account-details{
+    width: 70%;
+}
+
+.identification-div{
+    border-radius: 10px;
+    border:2px solid #ddd;
+    padding: 10px;
+}
+
+.upload-btn{
+    border-radius: 10px;
+    border:2px solid #ddd;
+    background-color: grey;
+    padding: 10px;
+    cursor: pointer;
+}

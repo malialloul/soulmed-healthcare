@@ -1,0 +1,23 @@
+.activity{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 20px;
+    font-size: 20px;
+
+}
+.activity .patient-profile-img{
+    width: 150px;
+    height: 150px;
+}
+
+.activity table,.activity td{
+    width: 100%;
+}
+.activity th{
+    padding: 10px;
+}
+.done{
+    color:green
+}
+.cancelled{
+    color:red
+}

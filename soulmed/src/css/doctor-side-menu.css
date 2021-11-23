@@ -1,0 +1,32 @@
+#side-menu{
+    background-color: #68686a;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #ddd;
+    bottom: 0;
+    float: left;
+    height: 100%;
+    z-index: 5;
+    width: 20%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+    
+    
+}
+.side-menu-item{
+    border: 2px solid #3fabf3;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: white;
+    
+}
+
+.side-menu-item:hover,.selected_item{
+    background-color: #3fabf3;
+}
+
+Link span{
+    color: white;
+}

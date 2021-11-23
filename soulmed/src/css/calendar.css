@@ -1,0 +1,46 @@
+/* SHADE DAYS IN THE PAST */
+td.fc-day.fc-day-past {
+    background-color: #d4cdcd;
+}
+.has-events{
+    background-color: tomato;
+}
+.none{
+    display: none;
+}
+.busy{
+    background-color: red;
+}
+.physical_appointment{
+    background-color: chartreuse;
+}
+.virtual_appointment{
+    background-color: coral;
+}
+.pv_appointment{
+    background-color: darkred;
+}
+.meeting{
+    background-color: #ddd;
+}
+.break{
+    background-color: pink;
+}
+.scale_key{
+    width: 20px;
+    height: 20px;
+}
+.event-index{
+    z-index: 3;
+}
+.scale_keys{
+    
+    color: black;
+}
+
+ button.book_appmt{
+    border-radius: 20px;
+    padding: 10px;
+    background-color: white;
+    width: 100%;
+}

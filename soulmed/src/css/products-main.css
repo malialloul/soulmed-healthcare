@@ -1,0 +1,43 @@
+.container-fluid,.products{
+    padding: 30px;
+}
+
+strong{
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.product-search-input {
+    height: 60px;
+    text-indent: 25px;
+	border-radius: 10px ;
+	display: block;
+	border-style: none;
+	width: 100%;
+	padding: 20px;
+
+}
+
+.search-bar{
+    position: relative;
+}
+
+.search-icon{
+    position: absolute;
+    left: 2;
+    top: 2;
+}
+
+.category-card{
+    background-color: white;
+    height: auto;
+    width: 400px;
+    padding: 20px;
+    cursor: pointer;
+
+}
+.product-image{
+    width: 100px;
+    height: 100px;
+}
