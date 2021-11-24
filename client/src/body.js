@@ -22,14 +22,14 @@ const Body = ({ ...props }) => {
               <div className="row no-gutters">
                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
                   <div className="users-container">
-                    <div className="chat-search-box">
+                    <div className="chat-search-box d-flex">
                       <div className="input-group">
-                        <input className="form-control" placeholder="Search" />
-                        <div className="input-group-btn">
-                          <button type="button" className="btn btn-info">
+                        <input className="" placeholder="Search" />
+                        <div className="">
+                          <button type="button" className=" btn-info">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
-                              className="h-4 w-4"
+                              className="h-2 w-2"
                               fill="none"
                               viewBox="0 0 20 20"
                               stroke="currentColor"

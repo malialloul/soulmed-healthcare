@@ -34,7 +34,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("callUser", (data) => {
+    console.log("user rings")
     io.to(users[data.userToCall]).emit("hey", {
+
       signal: data.signalData,
       from: data.from,
     });
