@@ -13,6 +13,8 @@ import hangup from "./Icons/hang-up.svg";
 import fullscreen from "./Icons/fullscreen.svg";
 import minimize from "./Icons/minimize.svg";
 import ringtone from "./Sounds/ringtone.mp3";
+import "./style.css";
+import Body from "./body";
 
 const Watermark = React.lazy(() => import("./Components/Watermark/Watermark"));
 
@@ -45,31 +47,13 @@ function App({ ...props }) {
   const socket = useRef();
   const myPeer = useRef();
 
+  // onClick={() => callPeer(receiverID.toLowerCase().trim())}
+
   let landingHTML = (
     <>
-      <main>
-        <div className="u-margin-top-xxlarge u-margin-bottom-xxlarge">
-          <div className="o-wrapper-l">
-            <div className="hero flex flex-column">
-              <div className="callBox flex">
-                <input
-                  type="text"
-                  placeholder="Friend ID"
-                  value={receiverID}
-                  onChange={(e) => setReceiverID(e.target.value)}
-                  className="form-input"
-                />
-                <button
-                  onClick={() => callPeer(receiverID.toLowerCase().trim())}
-                  className="primaryButton"
-                >
-                  Call
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <div className="row container-fluid">
+        <Body data = {users} onVideoClick = {(key) => callPeer(key)} userId ={yourID} />
+      </div>
     </>
   );
 
@@ -77,11 +61,10 @@ function App({ ...props }) {
     socket.current = io("http://localhost:4003");
     socket.current.on("yourID", (id) => {
       setYourID(id);
-    })
+    });
     socket.current.on("allUsers", (users) => {
       setUsers(users);
-    })
-
+    });
 
     socket.current.on("hey", (data) => {
       setReceivingCall(true);
@@ -93,8 +76,6 @@ function App({ ...props }) {
 
   function callPeer(id) {
     if (id !== "" && users[id] && id !== yourID) {
-      console.log(JSON.stringify(users) + " " + id);
-
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {
@@ -471,9 +452,6 @@ function App({ ...props }) {
         {incomingCall}
       </div>
       <div className="callContainer" style={{ display: renderCall() }}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Watermark />
-        </Suspense>
         <div className="partnerVideoContainer">{PartnerVideo}</div>
         <div className="userVideoContainer">{UserVideo}</div>
         <div className="controlsContainer flex">
