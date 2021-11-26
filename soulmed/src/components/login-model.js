@@ -3,20 +3,27 @@ import "../css/login-model.css";
 import RegistrationModal from "./registration-modal";
 import { Modal } from "react-bootstrap";
 import io from "socket.io-client";
+import { userContoller } from "../controllers/user-controller";
+import { useForm, Controller } from "react-hook-form";
+import { userService } from "../services/userService";
 
 const LoginModel = ({ ...props }) => {
   const [modalRegistrationShow, setModalRegistrationShow] = useState(false);
   const [modalLoginShow, setModalLoginShow] = useState(false);
-  const socket = useRef();
   const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
-  useEffect(() => {
-    socket.current = io("http://localhost:4001");
-  }, []);
+  const { register, handleSubmit, reset, formState, watch, control } = useForm({
+    mode: "onChange",
+  });
 
-  const Login = () => {
-    socket.current.emit("newUser", userEmail);
+  const { errors, isDirty, isSubmitting, isValid } = formState;
+
+  const onSubmitHandler = (data) => {
     setModalLoginShow(false);
+    const userLoginData = userService.loginUser(data);
+    console.log(userLoginData);
+    reset();
   };
 
   useEffect(() => {
@@ -32,10 +39,10 @@ const LoginModel = ({ ...props }) => {
   };
 
   const registerSubmit = () => {
-    setModalRegistrationShow(false);
-    setModalLoginShow(false);
-    setSubmitted(true);
-    props.submit(true);
+    //  setModalRegistrationShow(false);
+    //setModalLoginShow(false);
+    //setSubmitted(true);
+    //props.submit(true);
   };
 
   return (
@@ -56,11 +63,12 @@ const LoginModel = ({ ...props }) => {
         </Modal.Header>
         <Modal.Body>
           <div className="login-form">
-            <form action="">
+            <form onSubmit={handleSubmit(onSubmitHandler)}>
               <div className="form-group">
                 <input
                   type="text"
-                  placeholder="Email address or phone number"
+                  {...register("username")}
+                  placeholder="Email address or username"
                   className="input full-width"
                   onChange={(e) => setUserEmail(e.target.value)}
                 />
@@ -68,14 +76,18 @@ const LoginModel = ({ ...props }) => {
               <div className="form-group">
                 <input
                   type="password"
+                  {...register("password")}
                   placeholder="Password"
                   className="input full-width"
                 />
               </div>
               <div className="login">
-                <a onClick={() => Login()} href="#" className="btn">
-                  log in
-                </a>
+                <input
+                  className="btn"
+                  type="submit"
+                  disabled={!isDirty || !isValid}
+                  value="Login"
+                />
               </div>
               <div className="forgot">
                 <a href="">Forgot Password?</a>

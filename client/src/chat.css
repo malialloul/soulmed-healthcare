@@ -367,3 +367,7 @@ ul {
     margin-bottom: 2rem;
     box-shadow: none;
 }
+.new_messages{
+    font-size: 15px;
+    background-color: red;
+}

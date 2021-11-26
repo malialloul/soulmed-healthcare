@@ -19,6 +19,7 @@ app.get("*", (req, res) => {
 });
 
 const users = {};
+let messages = [];
 
 io.on("connection", (socket) => {
   const userid = username.generateUsername("-");
@@ -28,16 +29,62 @@ io.on("connection", (socket) => {
   //send back username
   socket.emit("yourID", userid);
   io.sockets.emit("allUsers", users);
-  console.log(users)
+
   socket.on("disconnect", () => {
     delete users[userid];
   });
 
-  socket.on("callUser", (data) => {
-    console.log("user rings")
-    io.to(users[data.userToCall]).emit("hey", {
+    /*socket.on("addUser", (data) => {
+    if (!users[data.username]) {
+      users[data.username] = socket.id;
+    }
+    //send back username
+    socket.emit("yourID", data.username);
+    io.sockets.emit("allUsers", users);
+  });
+  //socket.on("disconnect", () => {
+  // delete users[userid];
+  //});
 
+  socket.on("deleteUser", (data) => {
+    delete users[data.username];
+    io.sockets.emit("allUsers", {});
+
+  });*/
+
+  socket.on("callUser", (data) => {
+    io.to(users[data.userToCall]).emit("hey", {
       signal: data.signalData,
+      from: data.from,
+    });
+  });
+
+  socket.on("setUserTyping", (data) => {
+    io.to(users[data.to]).emit("typingPeers" , {
+      from: data.from,
+      typing: data.typing
+    })
+  })
+
+  socket.on("getMessages", (data) => {
+    let peerMessages = messages.filter(
+      (m) =>
+        (m.from === data.from && m.to === data.to) ||
+        (m.from === data.to && m.to === data.from)
+    );
+    socket.emit("peerMessages", peerMessages);
+    socket.emit("yourPeerId", data.to);
+  });
+
+  socket.on("addMessage", (data) => {
+    messages.push(data);
+    let peerMessages = messages.filter(
+      (m) =>
+        (m.from === data.from && m.to === data.to) ||
+        (m.from === data.to && m.to === data.from)
+    );
+    socket.emit("peerMessages", peerMessages);
+    io.to(users[data.to]).emit("newMessage", {
       from: data.from,
     });
   });

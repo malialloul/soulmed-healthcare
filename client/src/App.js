@@ -15,6 +15,7 @@ import minimize from "./Icons/minimize.svg";
 import ringtone from "./Sounds/ringtone.mp3";
 import "./style.css";
 import Body from "./body";
+import { useCookies } from "react-cookie";
 
 const Watermark = React.lazy(() => import("./Components/Watermark/Watermark"));
 
@@ -41,29 +42,147 @@ function App({ ...props }) {
   const [videoMuted, setVideoMuted] = useState(false);
   const [isfullscreen, setFullscreen] = useState(false);
   const [copied, setCopied] = useState(false);
-
+  const [cookies, setCookie] = useCookies(["user"]);
+  const [isVideo, setIsVideo] = useState(true);
   const userVideo = useRef();
   const partnerVideo = useRef();
   const socket = useRef();
   const myPeer = useRef();
+  const [peerUserMessages, setPeerUserMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [peerId, setPeerId] = useState(-1);
+  let newMessages = new Map();
+  const [peersNewMessages, setPeersNewMessages] = useState(newMessages);
+  const [typingPeers, setTypingPeers] = useState(new Map());
+
+  const [username, setUsername] = useState("");
+  const [conntectionEstablished, setConnectionEstablished] = useState(false);
 
   // onClick={() => callPeer(receiverID.toLowerCase().trim())}
 
   let landingHTML = (
     <>
-      <div className="row container-fluid">
-        <Body data = {users} onVideoClick = {(key) => callPeer(key)} userId ={yourID} />
-      </div>
+      {conntectionEstablished && (
+        <div className="row container-fluid">
+          {users[yourID]}
+          <input
+            type="text"
+            placeholder="username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          {yourID === "" && <button onClick={() => Login()}>Login</button>}
+          <button onClick={() => Logout()}>Logout</button>
+
+          {yourID !== "" && (
+            <Body
+              data={users}
+              typingPeers={typingPeers}
+              setMessageModified={(value, currentPeerId) =>
+                setModifyPeerMessage(value, currentPeerId)
+              }
+              peersNewMessages={peersNewMessages}
+              onChangePeer={(id, currentPeerId) => getMessages(id)}
+              onSend={(message, currentPeerId) =>
+                sendMessage(message, currentPeerId)
+              }
+              onVideoClick={(key) => callPeer(key, true)}
+              onAudioClick={(key) => callPeer(key, false)}
+              userId={yourID}
+              peerMessages={peerUserMessages}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 
   useEffect(() => {
-    socket.current = io("http://localhost:4003");
-    socket.current.on("yourID", (id) => {
+    socket.current = new WebSocket("ws://localhost:9030");
+
+    socket.current.onopen = function () {
+      setConnectionEstablished(true);
+    };
+
+    // Log errors
+    socket.current.onerror = function (error) {
+      console.error("WebSocket Error " + error);
+    };
+
+    // Log messages from the server
+    socket.current.onmessage = function (e) {
+      let msg = JSON.parse(e.data);
+      console.log(msg);
+      switch (msg.type) {
+        case "yourId":
+          setYourID(msg.data);
+          break;
+        case "allUsers":
+          setUsers(msg.data);
+          break;
+        case "peerMessages":
+          setPeerUserMessages(msg.data.messages);
+          break;
+        case "typingPeers":
+          let typings = typingPeers;
+          typings.set(msg.data.from, msg.data.typing);
+          setTypingPeers({ typings });
+          break;
+        case "newMessage":
+          if (peerId !== msg.data.from) {
+            let messages = peersNewMessages;
+            if (messages.has(msg.data.from)) {
+              messages.set(msg.data.from, messages.get(msg.data.from) + 1);
+            } else {
+              messages.set(msg.data.from, 1);
+            }
+            console.log(messages);
+            setPeersNewMessages({ messages });
+          }
+          break;
+        case "hey":
+          setReceivingCall(true);
+          ringtoneSound.play();
+          setIsVideo(msg.data.video)
+          setCaller(msg.data.from);
+          setCallerSignal(msg.data.signal);
+          break;
+      }
+    };
+
+    {
+      /*   socket.current.on("yourID", (id) => {
       setYourID(id);
+    });
+    socket.current.on("yourPeerId", (id) => {
+      setPeerId(id);
     });
     socket.current.on("allUsers", (users) => {
       setUsers(users);
+    });
+
+    socket.current.on("peerMessages", (data) => {
+      setPeerUserMessages(data);
+    });
+
+    socket.current.on("typingPeers", (data) => {
+        let typings = typingPeers;
+        typings.set(data.from, data.typing);
+        setTypingPeers({ typings });
+      
+    });
+
+    socket.current.on("newMessage", (data) => {
+      let messages = peersNewMessages;
+      if (peerId !== data.from) {
+        if (messages.has(data.from)) {
+          messages.set(data.from, messages.get(data.from) + 1);
+        } else {
+          messages.set(data.from, 1);
+        }
+      } else {
+        messages.set(data.from, null);
+      }
+      setPeersNewMessages({ messages });
     });
 
     socket.current.on("hey", (data) => {
@@ -72,12 +191,95 @@ function App({ ...props }) {
       setCaller(data.from);
       setCallerSignal(data.signal);
     });
+  */
+    }
   }, []);
 
-  function callPeer(id) {
+  const setModifyPeerMessage = (value, currentPeerId) => {
+    socket.current.send(
+      JSON.stringify({
+        type: "setUserTyping",
+        data: {
+          from: yourID,
+          to: currentPeerId,
+          typing: value,
+        },
+      })
+    );
+  };
+
+  const Login = () => {
+    socket.current.send(
+      JSON.stringify({
+        type: "addUser",
+        data: {
+          username: username,
+        },
+      })
+    );
+  };
+  const Logout = () => {
+    socket.current.send(
+      JSON.stringify({
+        type: "deleteUser",
+        data: {
+          username: yourID,
+          from: yourID,
+        },
+      })
+    );
+  };
+
+  const sendMessage = (message, currentPeerId) => {
+    if (message !== "") {
+      socket.current.send(
+        JSON.stringify({
+          type: "setUserTyping",
+          data: {
+            from: yourID,
+            to: currentPeerId,
+            typing: false,
+          },
+        })
+      );
+    }
+    socket.current.send(
+      JSON.stringify({
+        type: "addMessage",
+        data: {
+          from: yourID,
+          to: currentPeerId,
+          message: message,
+          date: new Date(),
+        },
+      })
+    );
+  };
+
+  const getMessages = (id) => {
+    let messages = peersNewMessages.messages
+      ? peersNewMessages.messages
+      : peersNewMessages;
+    messages.set(id, null);
+    setPeerId(id);
+    setPeersNewMessages({ messages });
+    socket.current.send(
+      JSON.stringify({
+        type: "getMessages",
+        data: {
+          from: yourID,
+          to: id,
+          date: new Date(),
+        },
+      })
+    );
+  };
+
+  function callPeer(id, video) {
     if (id !== "" && users[id] && id !== yourID) {
+     
       navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
+        .getUserMedia({ video: video, audio: true })
         .then((stream) => {
           setStream(stream);
           setCallingFriend(true);
@@ -142,11 +344,17 @@ function App({ ...props }) {
           myPeer.current = peer;
 
           peer.on("signal", (data) => {
-            socket.current.emit("callUser", {
-              userToCall: id,
-              signalData: data,
-              from: yourID,
-            });
+            socket.current.send(
+              JSON.stringify({
+                type: "callUser",
+                data: {
+                  userToCall: id,
+                  signalData: data,
+                  from: yourID,
+                  video: video
+                },
+              })
+            );
           });
 
           peer.on("stream", (stream) => {
@@ -159,18 +367,22 @@ function App({ ...props }) {
             endCall();
           });
 
-          socket.current.on("callAccepted", (signal) => {
-            setCallAccepted(true);
-            peer.signal(signal);
-          });
-
-          socket.current.on("close", () => {
-            window.location.reload();
-          });
-
-          socket.current.on("rejected", () => {
-            window.location.reload();
-          });
+          socket.current.onmessage = function (e) {
+            var msg = JSON.parse(e.data);
+            console.log("from server " + msg.type);
+            switch (msg.type) {
+              case "callAccepted":
+                setCallAccepted(true);
+                peer.signal(msg.data);
+                break;
+              case "close":
+                window.location.reload();
+                break;
+              case "rejected":
+                window.location.reload();
+                break;
+            }
+          };
         })
         .catch(() => {
           setModalMessage(
@@ -190,7 +402,7 @@ function App({ ...props }) {
   function acceptCall() {
     ringtoneSound.unload();
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ video: isVideo, audio: true })
       .then((stream) => {
         setStream(stream);
         if (userVideo.current) {
@@ -206,7 +418,12 @@ function App({ ...props }) {
         myPeer.current = peer;
 
         peer.on("signal", (data) => {
-          socket.current.emit("acceptCall", { signal: data, to: caller });
+          socket.current.send(
+            JSON.stringify({
+              type: "acceptCall",
+              data: { signal: data, to: caller },
+            })
+          );
         });
 
         peer.on("stream", (stream) => {
@@ -219,9 +436,14 @@ function App({ ...props }) {
 
         peer.signal(callerSignal);
 
-        socket.current.on("close", () => {
-          window.location.reload();
-        });
+        socket.current.onmessage = function (e) {
+          var msg = JSON.parse(e.data);
+          switch (msg.type) {
+            case "close":
+              window.location.reload();
+              break;
+          }
+        };
       })
       .catch(() => {
         setModalMessage(
@@ -234,13 +456,17 @@ function App({ ...props }) {
   function rejectCall() {
     ringtoneSound.unload();
     setCallRejected(true);
-    socket.current.emit("rejected", { to: caller });
+    socket.current.send(
+      JSON.stringify({ type: "rejected", data: { to: caller } })
+    );
     window.location.reload();
   }
 
   function endCall() {
     myPeer.current.destroy();
-    socket.current.emit("close", { to: caller });
+    socket.current.send(
+      JSON.stringify({ type: "close", data: { to: caller } })
+    );
     window.location.reload();
   }
 

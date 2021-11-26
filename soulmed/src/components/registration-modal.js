@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { util } from "../public/util";
 import classNames from "classnames";
+import { userService } from "../services/userService";
 
 const RegistrationModal = ({ ...props }) => {
   const { register, handleSubmit, reset, formState, watch, control } = useForm({
@@ -20,7 +21,8 @@ const RegistrationModal = ({ ...props }) => {
   password.current = watch("password", "");
 
   const onSubmitHandler = (data) => {
-    props.onSubmit();
+    let userRegiterationResponse = userService.registerUser(data);
+    alert("Your username: "+userRegiterationResponse["userName"]);
     reset();
   };
 
@@ -29,6 +31,7 @@ const RegistrationModal = ({ ...props }) => {
   const [showCustomDiv, setShowCustomDiv] = useState(false);
   const [gender, setGender] = useState("");
   const [role, setRole] = useState("");
+  const [customGenderName, setCustomGenderName] = useState("");
 
   const options = [
     { value: "1", label: 'She: "Wish her a happy birthday!"' },
@@ -116,7 +119,7 @@ const RegistrationModal = ({ ...props }) => {
                       type="text"
                       placeholder="First Name"
                       className="input full-width"
-                      {...register("firstName", {
+                      {...register("firstname", {
                         pattern: /^[A-Za-z]+$/i,
 
                         validate: (value) =>
@@ -125,7 +128,7 @@ const RegistrationModal = ({ ...props }) => {
                     />
                   </div>
                   <div className="error">
-                    {errors.firstName?.type === "pattern" &&
+                    {errors.firstname?.type === "pattern" &&
                       "Invalid Format, special characters are not allowed"}
                   </div>
                 </div>
@@ -136,7 +139,7 @@ const RegistrationModal = ({ ...props }) => {
                       type="text"
                       placeholder="Last Name"
                       className="input full-width"
-                      {...register("lastName", {
+                      {...register("lastname", {
                         pattern: /^[A-Za-z]+$/i,
 
                         validate: (value) =>
@@ -145,7 +148,7 @@ const RegistrationModal = ({ ...props }) => {
                     />
                   </div>
                   <div className="error">
-                    {errors.lastName?.type === "pattern" &&
+                    {errors.lastname?.type === "pattern" &&
                       "Invalid Format, special characters are not allowed"}
                   </div>
                 </div>
@@ -170,7 +173,7 @@ const RegistrationModal = ({ ...props }) => {
 
               <div className="form-group d-flex flex-column">
                 <input
-                  type="text"
+                  type="password"
                   placeholder="New Password"
                   className="input full-width"
                   {...register("password", {
@@ -205,7 +208,7 @@ const RegistrationModal = ({ ...props }) => {
 
               <Controller
                 control={control}
-                {...register("dob", {
+                {...register("birthdate", {
                   validate: (value) =>
                     value !== "" &&
                     value !== null &&
@@ -251,7 +254,7 @@ const RegistrationModal = ({ ...props }) => {
                     type="text"
                     placeholder="Phone Number"
                     className="input full-width"
-                    {...register("phone_number", {
+                    {...register("phoneNumber", {
                       pattern: /^[0-9]*$/,
                       validate: (value) =>
                         value !== "" && util.isValidPhoneNumber(value),
@@ -259,7 +262,7 @@ const RegistrationModal = ({ ...props }) => {
                   />
                 </div>
                 <div className="error">
-                  {errors.phone_number?.type === "pattern" && "Invalid format"}
+                  {errors.phoneNumber?.type === "pattern" && "Invalid format"}
                 </div>
               </div>
 
@@ -271,8 +274,7 @@ const RegistrationModal = ({ ...props }) => {
                       type="radio"
                       value="patient"
                       checked={role === "patient"}
-
-                      onClick = {() => setRole("patient")}
+                      onClick={() => setRole("patient")}
                       {...register("role1", {
                         validate: (value) => role !== "",
                       })}
@@ -284,9 +286,7 @@ const RegistrationModal = ({ ...props }) => {
                       type="radio"
                       value="doctor"
                       checked={role === "doctor"}
-
-                      onClick = {() => setRole("doctor")}
-
+                      onClick={() => setRole("doctor")}
                       {...register("role2", {
                         validate: (value) => role !== "",
                       })}
@@ -298,8 +298,7 @@ const RegistrationModal = ({ ...props }) => {
                       type="radio"
                       checked={role === "organization"}
                       value="organization"
-                      onClick = {() => setRole("organization")}
-
+                      onClick={() => setRole("organization")}
                       {...register("role3", {
                         validate: (value) => role !== "",
                       })}
@@ -307,9 +306,7 @@ const RegistrationModal = ({ ...props }) => {
                     <label>Organization</label>
                   </div>
                 </div>
-              
               </div>
-
 
               <div className="form-group flex-column">
                 <span>Gender</span>
@@ -351,7 +348,7 @@ const RegistrationModal = ({ ...props }) => {
                 {showCustomDiv && (
                   <div className="flex-col">
                     <select
-                      {...register("custom_select", {
+                      {...register("promoun", {
                         validate: (value) => gender !== "" || !showCustomDiv,
                       })}
                       onChange={(e) => setGender(e.target.value)}
@@ -371,7 +368,9 @@ const RegistrationModal = ({ ...props }) => {
                     <br />
                     <input
                       className="input full-width"
+                      {...register("costumGenderName")}
                       placeholder="Gender (optional)"
+                      onChange={(e) => setCustomGenderName(e.target.value)}
                     />
                   </div>
                 )}
